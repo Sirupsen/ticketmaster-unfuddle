@@ -76,7 +76,7 @@ module TicketMasterMod
 
       def self.tickets(project_instance)
         Unfuddler.authenticate(project_instance.authentication.to_hash)
-        project = Unfuddler::Project.find("testproject")
+        project = Unfuddler::Project.find(project_instance.name)
         formatted_tickets = []
 
         unless project.tickets.empty?
