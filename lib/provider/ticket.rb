@@ -1,6 +1,6 @@
 module TicketMasterMod
   module Unfuddle
-    class Ticket
+    class Ticket < TicketMasterMod::Ticket
       class << self
         def create(ticket)
           Unfuddler.authenticate(ticket.project.authentication.to_hash)

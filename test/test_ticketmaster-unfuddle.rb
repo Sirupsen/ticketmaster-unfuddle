@@ -1,5 +1,4 @@
 require 'helper'
-require 'ticketmaster'
 
 class TestTicketmasterUnfuddle < Test::Unit::TestCase
   context "Unfuddle" do

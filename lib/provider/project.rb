@@ -1,6 +1,6 @@
 module TicketMasterMod
   module Unfuddle
-    class Project
+    class Project < TicketMasterMod::Project
       class << self
         def find(query, options = {})
           Unfuddler.authenticate(options[:authentication].to_hash)
