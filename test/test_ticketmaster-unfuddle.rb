@@ -5,8 +5,8 @@ class TestTicketmasterUnfuddle < Test::Unit::TestCase
   context "TicketMaster::Provider::Unfuddle" do
     setup do
       @authentication = {
-        :username    => "simon",
-        :password   => "WT00op",
+        :username    => "John",
+        :password   => "seekrit!!1!eleven",
         :subdomain  => "ticketmaster"
       }
       
@@ -72,9 +72,5 @@ class TestTicketmasterUnfuddle < Test::Unit::TestCase
         assert_instance_of Array, project.tickets
       end
     end
-
-    #should "find projects with #project" do
-    #  assert_instance_of @unfuddle_project, @ticketmaster
-    #end
   end
 end

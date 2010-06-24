@@ -1,6 +1,6 @@
 module TicketMaster::Provider
   module Unfuddle
-    def self.find
+    def self.find(*options)
       first = options.shift
     end
   end
