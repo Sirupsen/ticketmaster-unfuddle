@@ -1,8 +1,6 @@
 module TicketMaster::Provider
   module Unfuddle
     class Project < TicketMaster::Provider::Base::Project
-      attr_accessor :prefix_options
-
       def self.find(*options)
         first = options.shift
 
@@ -26,13 +24,25 @@ module TicketMaster::Provider
       end
 
       def initialize(*options)
+        first = options.shift
         @system = :unfuddle
         @system_data = {}
 
-        first = options.shift
-        super(first)
+        if first.is_a?(Unfuddler::Project)
+          @system_data[:client] = first
+          super(first.to_hash)
+        else
+          super(first)
+        end
       end
 
+      def tickets(*options)
+        if options.length == 0
+          Ticket.find(:project_id => self.id)
+        else
+          puts "OHAI"
+        end
+      end
     end
   end
 end

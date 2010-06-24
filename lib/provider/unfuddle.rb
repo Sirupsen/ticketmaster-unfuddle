@@ -7,7 +7,7 @@ module TicketMaster::Provider
     end
 
     def authorize(authentication = {})
-      super
+      @authentication ||= TicketMaster::Authenticator.new(authentication)
       Unfuddler.authenticate(@authentication.to_hash)
     end
 
@@ -25,7 +25,7 @@ module TicketMaster::Provider
 
     def project(*options)
       authorize
-      return set_master_data(Project.find(:first, *options)) if options.length > 0
+      #return set_master_data(Project.find(:first, *options)) if options.length > 0
       Project
     end
 

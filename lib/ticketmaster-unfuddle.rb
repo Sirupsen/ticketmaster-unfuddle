@@ -1,2 +1,2 @@
 require 'unfuddler'
-%w{project ticket}.each {|lib| require "provider/#{lib}"}
+%w{project ticket unfuddle}.each {|lib| require "provider/#{lib}"}
