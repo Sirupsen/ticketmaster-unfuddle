@@ -38,7 +38,7 @@ module TicketMaster::Provider
 
       def tickets(*options)
         if options.length == 0
-          Ticket.find(:project_id => self.id)
+          Ticket.find({:project_name => self.short_name})
         else
           puts "OHAI"
         end

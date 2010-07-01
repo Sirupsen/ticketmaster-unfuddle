@@ -5,14 +5,14 @@ class TestTicketmasterUnfuddle < Test::Unit::TestCase
   context "TicketMaster::Provider::Unfuddle" do
     setup do
       @authentication = {
-        :username    => "John",
-        :password   => "seekrit!!1!eleven",
+        :username    => "john",
+        :password   => "seekrit",
         :subdomain  => "ticketmaster"
       }
       
       @ticketmaster = TicketMaster.new(:unfuddle, @authentication)
 
-      @testproject = TicketMaster::Provider::Unfuddle::Project.new({ 
+      properties = {
         :account_id => 1,
         :archived => false,
         :assignee_on_resolve => "reporter",
@@ -40,10 +40,12 @@ class TestTicketmasterUnfuddle < Test::Unit::TestCase
         :ticket_field3_title => "Field 3",
         :title => "Test",
         :updated_at => "2010-06-16T07:28:04Z" 
-      })
+      }
 
-      stub(Unfuddler::Project).find {[@testproject]}
+      @testproject = TicketMaster::Provider::Unfuddle::Project.new(properties)
+      @unfuddler_project = Unfuddler::Project.new(properties)
 
+      stub(Unfuddler::Project).find {[@unfuddler_project]}
       @unfuddle_project = TicketMaster::Provider::Unfuddle::Project
     end
 
@@ -68,7 +70,7 @@ class TestTicketmasterUnfuddle < Test::Unit::TestCase
     context "tickets" do
       should "load all" do
         stub(Unfuddler::Ticket).find(:all) {[Unfuddler::Ticket.new]}
-        project = @ticketmaster.projects
+        project = @ticketmaster.projects.first
         assert_instance_of Array, project.tickets
       end
     end
