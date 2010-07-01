@@ -38,9 +38,14 @@ module TicketMaster::Provider
 
       def tickets(*options)
         if options.length == 0
-          Ticket.find({:project_name => self.short_name})
+          Ticket.find({:project_id => self.id})
         else
-          puts "OHAI"
+          first = options.first
+          if first.is_a?(Fixnum)
+            [Ticket.find(first, {:project_id => self.id})]
+          else
+            Ticket.find({:project_id => self.id}.merge(:q => first))
+          end
         end
       end
     end

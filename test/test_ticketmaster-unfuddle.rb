@@ -5,14 +5,14 @@ class TestTicketmasterUnfuddle < Test::Unit::TestCase
   context "TicketMaster::Provider::Unfuddle" do
     setup do
       @authentication = {
-        :username    => "john",
-        :password   => "seekrit",
+        :username    => "simon",
+        :password   => "WT00op",
         :subdomain  => "ticketmaster"
       }
       
       @ticketmaster = TicketMaster.new(:unfuddle, @authentication)
 
-      properties = {
+      project_properties = {
         :account_id => 1,
         :archived => false,
         :assignee_on_resolve => "reporter",
@@ -42,11 +42,41 @@ class TestTicketmasterUnfuddle < Test::Unit::TestCase
         :updated_at => "2010-06-16T07:28:04Z" 
       }
 
-      @testproject = TicketMaster::Provider::Unfuddle::Project.new(properties)
-      @unfuddler_project = Unfuddler::Project.new(properties)
+      @testproject = TicketMaster::Provider::Unfuddle::Project.new(project_properties)
+      @unfuddler_project = Unfuddler::Project.new(project_properties)
+
+      @ticket_properties = {
+        :assignee_id => nil, 
+        :component_id => nil, 
+        :created_at => "2010-06-16T07:28:04Z", 
+        :description => "Hello World",
+        :description_format => "markdown",
+        :due_on => nil,
+        :field1_value_id => nil,
+        :field2_value_id => nil,
+        :field3_value_id => nil,
+        :hours_estimate_current => 0.0,
+        :hours_estimate_initial => 0.0,
+        :id => 169,
+        :milestone_id => nil,
+        :number => 112 ,
+        :priority => "3",
+        :project_id => 2,
+        :reporter_id => 2,
+        :resolution => nil,
+        :resolution_description => nil,
+        :resolution_description_format => "markdown",
+        :severity_id => nil,
+        :status => "new",
+        :summary => "Test",
+        :updated_at => "2010-06-16T07:28:04Z",
+        :version_id => nil,
+      }
 
       stub(Unfuddler::Project).find {[@unfuddler_project]}
       @unfuddle_project = TicketMaster::Provider::Unfuddle::Project
+
+      stub(Unfuddler::Ticket).find {[Unfuddler::Ticket.new(@ticket_properties)]}
     end
 
     context "projects" do
@@ -68,10 +98,13 @@ class TestTicketmasterUnfuddle < Test::Unit::TestCase
     end
 
     context "tickets" do
-      should "load all" do
-        stub(Unfuddler::Ticket).find(:all) {[Unfuddler::Ticket.new]}
+      should "load and regognize all" do
         project = @ticketmaster.projects.first
         assert_instance_of Array, project.tickets
+        assert_instance_of Array, project.tickets(:all)
+        assert_instance_of Array, project.tickets(169)
+
+        assert_instance_of TicketMaster::Provider::Unfuddle::Ticket, project.tickets.first
       end
     end
   end
