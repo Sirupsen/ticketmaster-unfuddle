@@ -22,19 +22,23 @@ module TicketMaster::Provider
           # TODO
           #elsif second.is_a?(HasH)
           #end
+        elsif first == :first
+          self.new self.search(options.shift, 1).first
         elsif first.is_a?(Hash)
           self.search(first).collect { |t| self.new t }
         end
       end
 
       def self.search(options, limit = 1000)
-        project = Unfuddler::Project.find.each do |p|
-                    return project if project.id == options[:project_id]
-                  end
+        project = nil
+
+        Unfuddler::Project.find.each do |pject|
+          project = pject if pject.id == options[:project_id]
+        end
 
         options.delete(:project_id)
 
-        project.first.tickets.each do |t|
+        project.tickets.each do |t|
           options.keys.reduce(true) do |memo, key|
             t.send(key) == options[key] and (limit -=1) >= 0
           end

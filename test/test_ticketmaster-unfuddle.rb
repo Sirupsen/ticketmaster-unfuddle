@@ -101,10 +101,18 @@ class TestTicketmasterUnfuddle < Test::Unit::TestCase
       should "load and regognize all" do
         project = @ticketmaster.projects.first
         assert_instance_of Array, project.tickets
-        assert_instance_of Array, project.tickets(:all)
-        assert_instance_of Array, project.tickets(169)
-
         assert_instance_of TicketMaster::Provider::Unfuddle::Ticket, project.tickets.first
+
+        assert_instance_of Array, project.tickets(:all)
+        assert_instance_of TicketMaster::Provider::Unfuddle::Ticket, project.tickets(:all).first
+
+        assert_instance_of Array, project.tickets(169)
+        assert_instance_of TicketMaster::Provider::Unfuddle::Ticket, project.tickets(169).first
+
+
+        assert_instance_of Array, project.tickets(:id => 169)
+        assert_instance_of TicketMaster::Provider::Unfuddle::Ticket, project.tickets(:id => 168).first
+        assert_equal 169, project.tickets(:id => 169).first.id
       end
     end
   end
