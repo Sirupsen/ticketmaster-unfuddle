@@ -2,6 +2,9 @@ module TicketMaster::Provider
   module Unfuddle
     include TicketMaster::Provider::Base
 
+    PROJECT_API = Unfuddler::Project
+    TICKET_API = Unfuddler::Ticket
+
     def self.new(auth = {})
       TicketMaster.new(:unfuddle, auth)
     end
@@ -13,31 +16,22 @@ module TicketMaster::Provider
 
     def projects(*options)
       authorize
-
-      projects = if options.length > 0
-                   Project.find(*options)
-                 else
-                   Project.find(:all)
-                 end
-
-      set_master_data(projects)
+      super(*options)
     end
 
     def project(*options)
       authorize
-      #return set_master_data(Project.find(:first, *options)) if options.length > 0
-      Project
+      super(*options)
     end
 
-    private
-      def set_master_data(data)
-        if data.is_a?(Array)
-          data.collect! {|p| p.system_data.merge!(:master => self); p}
-        else
-          data.system_data.merge!(:master => self)
-        end
+    def tickets
+      authorize
+      super(*options)
+    end
 
-        data
-      end
+    def ticket
+      authorize
+      super(*options)
+    end
   end
 end
