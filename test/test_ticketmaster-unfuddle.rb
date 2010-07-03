@@ -106,9 +106,11 @@ class TestTicketmasterUnfuddle < Test::Unit::TestCase
         assert_instance_of Array, project.tickets(:all)
         assert_instance_of TicketMaster::Provider::Unfuddle::Ticket, project.tickets(:all).first
 
-        assert_instance_of Array, project.tickets(169)
-        assert_instance_of TicketMaster::Provider::Unfuddle::Ticket, project.tickets(169).first
+        assert_instance_of Array, project.tickets(:all, :status => "new")
+        assert_instance_of TicketMaster::Provider::Unfuddle::Ticket, project.tickets(:all, :status => "new").first
+        assert_equal "new", project.tickets(:all, :status => "new").first.status
 
+        assert_equal
 
         assert_instance_of Array, project.tickets(:id => 169)
         assert_instance_of TicketMaster::Provider::Unfuddle::Ticket, project.tickets(:id => 168).first
